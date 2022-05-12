@@ -1,0 +1,107 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3232759 */
+  src: url('iconfont.woff2?t=1648606992238') format('woff2'),
+       url('iconfont.woff?t=1648606992238') format('woff'),
+       url('iconfont.ttf?t=1648606992238') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-deliver:before {
+  content: "\e671";
+}
+
+.icon-evaluate:before {
+  content: "\e672";
+}
+
+.icon-shop:before {
+  content: "\e676";
+}
+
+.icon-ticket:before {
+  content: "\e677";
+}
+
+.icon-wang:before {
+  content: "\e678";
+}
+
+.icon-discover:before {
+  content: "\e67e";
+}
+
+.icon-scan:before {
+  content: "\e689";
+}
+
+.icon-filter:before {
+  content: "\e69c";
+}
+
+.icon-footprint:before {
+  content: "\e69d";
+}
+
+.icon-refresh:before {
+  content: "\e6a4";
+}
+
+.icon-present:before {
+  content: "\e6d3";
+}
+
+.icon-notice:before {
+  content: "\e70a";
+}
+
+.icon-choiceness:before {
+  content: "\e715";
+}
+
+.icon-clothes:before {
+  content: "\e717";
+}
+
+.icon-apps:before {
+  content: "\e729";
+}
+
+.icon-people:before {
+  content: "\e736";
+}
+
+.icon-file:before {
+  content: "\e739";
+}
+
+.icon-home:before {
+  content: "\e6b8";
+}
+
+.icon-text:before {
+  content: "\e791";
+}
+
+.icon-sortlight:before {
+  content: "\e7ad";
+}
+
+.icon-deletefill:before {
+  content: "\e6a6";
+}
+
+.icon-send:before {
+  content: "\e675";
+}
+
+.icon-pic:before {
+  content: "\e69b";
+}
+

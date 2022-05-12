@@ -1,0 +1,11 @@
+
+.van-tabbar-item{
+  &__text{
+    transform: scale(0.8);
+  }
+}
+
+:root {
+  --van-tabbar-item-active-color: #{$color-theme} !important;
+  --van-tabbar-item-text-color: #{$color-theme-grey} !important;
+}

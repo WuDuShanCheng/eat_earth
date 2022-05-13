@@ -1,0 +1,72 @@
+{
+  "id": "3394827",
+  "name": "环球点餐",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1904067",
+      "name": "头像 男孩",
+      "font_class": "icon-test",
+      "unicode": "e667",
+      "unicode_decimal": 58983
+    },
+    {
+      "icon_id": "1993426",
+      "name": "头像 女孩",
+      "font_class": "touxiangnvhai",
+      "unicode": "e6df",
+      "unicode_decimal": 59103
+    },
+    {
+      "icon_id": "7171413",
+      "name": "创享钻石",
+      "font_class": "chuangxiangzhizunvip",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "7171506",
+      "name": "创享紫金vip2",
+      "font_class": "chuangxiangzijinvip",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "7171653",
+      "name": "创享钻石vip5",
+      "font_class": "chuangxiangzuanshivip",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "26813345",
+      "name": "代付费账单",
+      "font_class": "daifufeizhangdan",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "26813400",
+      "name": "会员发展状况",
+      "font_class": "huiyuanfazhanzhuangkuang",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "26813547",
+      "name": "外卖单",
+      "font_class": "waimaidan",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "26813582",
+      "name": "员工管理",
+      "font_class": "yuangongguanli",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    }
+  ]
+}

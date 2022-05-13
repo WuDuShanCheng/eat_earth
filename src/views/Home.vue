@@ -1,24 +1,14 @@
 <template>
   <div class="home vh-100 w-100">
-    <!--打底背景-->
-    <div class="linear-bg"></div>
-    <!--标题-->
-    <div class="flex col-center row-left ml20 h44 f16 title-color">快餐店</div>
-    <!--商品彩报-->
-    <div class="flex">
-      <div class="com-box">
-        <div class="hanbao"></div>
-
-      </div>
-    </div>
-
-    <div class="flex-center">
-      <div class="type-box w145 h160">
-
-      </div>
-
-      <div class="type-box w145 h160 ml21">
-
+    <div class="bg"></div>
+    <div class="content">
+      <div class="info">
+        <div class="head-icon">
+          <!-- 通过 class-prefix 指定类名为 my-icon -->
+          <svg class="icon w50 h50" aria-hidden="true">
+            <use xlink:href="#icon-icon-test"></use>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
@@ -35,41 +25,226 @@
 
 <style scoped lang="scss">
 
-  .home{
-    .linear-bg{
-      /* 矩形 3 */
-      position: absolute;
+  .home {
+
+    .bg {
+      height: 300px;
       width: 100%;
-      height: 538px;
-      top: -1px;
-      left: 0;
-      z-index: -1;
-      background: linear-gradient(rgba(254,186,148,255) 0%,rgba(254,191,156,231) 11.494%,rgba(254,195,162,218) 18.391%,rgba(254,200,170,198) 28.506%,rgba(254,208,182,173) 41.21%,rgba(254,218,199,131) 55.172%,rgba(254,230,217,88) 69.885%,rgba(254,236,227,64) 78.161%,rgba(254,243,237,41) 85.977%,rgba(254,250,248,14) 94.713%,rgba(255,255,255,0) 100%);
+      background-color: #FEBD4A;
     }
 
-    .title-color{
-      color: #6D3E25;
-      font-weight: 300
+
+    .content {
+      padding: 0 15px;
+
+
+      .info {
+        position: relative;
+        margin-top: -40px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        background-color: #ffffff;
+        box-shadow: $box-shadow;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        .head-icon{
+          display: flex;
+          align-items: center;
+        }
+      }
+/*      .entrance {
+        position: relative;
+        margin-top: -80px;
+        margin-bottom: 30px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: $box-shadow;
+        padding: 30px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .item {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+
+          &:nth-child(1):after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            background-color: #ddd;
+            right: 0;
+            height: 100%;
+            transform: scaleX(0.5) scaleY(0.8);
+          }
+
+          .icon {
+            width: 84px;
+            height: 84px;
+            margin: 20px;
+          }
+
+          .title {
+            font-size: 30px;
+            color: $text-color-base;
+            font-weight: 600;
+          }
+        }
+      }
+
+
+
+        .qrcode_section {
+          color: $color-primary;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-size: $font-size-sm;
+
+          image {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 10px;
+          }
+        }
+      }
+
+
+      .navigators {
+        margin-bottom: 20px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: $box-shadow;
+        padding: 20px;
+        display: flex;
+        align-items: stretch;
+
+        .left {
+          flex: 1;
+          margin-right: 20px;
+          display: flex;
+          padding: 0 20px;
+          flex-direction: column;
+          font-size: $font-size-sm;
+          color: $text-color-base;
+          background-color: #F2F2E6;
+
+          .grid {
+            height: 50%;
+            display: flex;
+          }
+        }
+
+        .right {
+          flex: 1;
+          height: 270px;
+          display: flex;
+          flex-direction: column;
+
+          .tea-activity,
+          .member-gifts {
+            width: 100%;
+            display: flex;
+            padding: 20px;
+            font-size: $font-size-sm;
+            color: $text-color-base;
+            align-items: center;
+            position: relative;
+            box-sizing: border-box;
+          }
+
+          .tea-activity {
+            align-self: flex-start;
+            background-color: #FDF3F2;
+            margin-bottom: 20px;
+          }
+
+          .member-gifts {
+            align-self: flex-end;
+            background-color: #FCF6D4;
+          }
+
+          .right-img {
+            flex: 1;
+            position: relative;
+            margin-left: 20px;
+            margin-right: -20px;
+            margin-bottom: -20px;
+            display: flex;
+            align-items: flex-end;
+
+            image {
+              width: 100%;
+            }
+          }
+        }
+
+        .mark-img {
+          width: 30px;
+          height: 30px;
+          margin-right: 10px;
+        }
+
+        .yzclh-img {
+          height: 122.96px;
+          width: 214.86px;
+        }
+      }
+
+      .member-news {
+        margin-bottom: 130px;
+
+        .header {
+          display: flex;
+          justify-content: space-between;
+          padding: 20px 0;
+
+          .title {
+            font-size: $font-size-lg;
+            font-weight: bold;
+          }
+
+          .iconfont {
+            font-size: 52px;
+            color: $text-color-assist;
+          }
+        }
+
+        .list {
+          display: flex;
+          flex-direction: column;
+
+          .item {
+            position: relative;
+            height: 240px;
+
+            .title {
+              color: #ffffff;
+              font-weight: bold;
+              position: absolute;
+              left: 20px;
+              bottom: 20px;
+            }
+
+            image {
+              border-radius: 10px;
+              height: 100%;
+              width: 100%;
+            }
+          }
+        }
+      }*/
     }
 
-    .com-box{
-      flex: 1;
-      height: 260px;
-      margin-left: 30px;
-      background-image: url("src/assets/images/hanbaos.png");
-      background-size: 100% 100%; background-repeat: no-repeat;
-      background-position: 0% 0%;
-    }
-  }
-  .notice {
-    position: absolute;
-    margin-left: auto;
-    margin-right: 30px;
+
   }
 
-  .type-box{
-    background: linear-gradient(rgba(254, 189, 74, 0.3) 0%,rgba(255,255,255,0) 100%);
-    box-shadow: 0px 4px 4px rgba(255, 239, 230, 0.18);
-    border-radius: 16px;
-  }
+
 </style>

@@ -7,6 +7,8 @@ import { Button, Tabbar, TabbarItem, Form, Field, Icon, NavBar, Cell, CellGroup,
 import '@/scss/index.scss'
 // 框架引入样式
 import 'vant/lib/index.css';
+//引入图标
+import '@/scss/iconfont/iconfont'
 
 const app = createApp(App)
 app.use(router)

@@ -14,7 +14,7 @@
     },
     setup() {
       const state = reactive({
-        menu: ['/user', '/home', '/data'],
+        menu: ['/home', '/menu'],
         show: true
       })
 
@@ -25,7 +25,6 @@
   }
 </script>
 
-<style>
-
+<style lang="scss">
 
 </style>

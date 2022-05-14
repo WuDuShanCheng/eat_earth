@@ -9,9 +9,21 @@ import '@/scss/index.scss'
 import 'vant/lib/index.css';
 //引入图标
 import '@/scss/iconfont/iconfont'
+//引入vuex
+import store from '@/store'
+// 全局方法注册
+import {getRandomCode,useState,useAction} from '@/utils/globalMethods'
 
 const app = createApp(App)
+
+app.config.globalProperties.useState=useState
+app.config.globalProperties.useAction=useAction
+app.config.globalProperties.getRandomCode=getRandomCode
+
 app.use(router)
+
+app.use(store)
+
 app.use(Tabbar);
 app.use(TabbarItem);
 app.use(Form)
@@ -33,5 +45,8 @@ app.use(Divider)
 app.use(Col)
 app.use(Row)
 app.use(VanImage)
+
+
+
 
 app.mount('#app')

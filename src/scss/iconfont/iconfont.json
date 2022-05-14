@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4719753",
+      "name": "会员积分",
+      "font_class": "huiyuanjifen",
+      "unicode": "e6b0",
+      "unicode_decimal": 59056
+    },
+    {
+      "icon_id": "24732575",
+      "name": "星球",
+      "font_class": "xingqiu",
+      "unicode": "ecb3",
+      "unicode_decimal": 60595
+    },
+    {
+      "icon_id": "25672523",
+      "name": "银行卡",
+      "font_class": "yinhangka",
+      "unicode": "fefb",
+      "unicode_decimal": 65275
+    },
+    {
+      "icon_id": "25163425",
+      "name": "同城外卖",
+      "font_class": "tongchengwaimai",
+      "unicode": "fd2e",
+      "unicode_decimal": 64814
+    },
+    {
+      "icon_id": "25163563",
+      "name": "简餐速食",
+      "font_class": "jiancansushi",
+      "unicode": "fd48",
+      "unicode_decimal": 64840
+    },
+    {
       "icon_id": "1904067",
       "name": "头像 男孩",
       "font_class": "icon-test",

@@ -1,13 +1,84 @@
 <template>
-  <div class="home vh-100 w-100">
-    <div class="bg"></div>
+  <div class="home w-100 pb50">
+    <van-image src="https://img-shop.qmimg.cn/s23107/2020/04/26/3eb7808bf105262604.jpg" class="h300 w-100"></van-image>
     <div class="content">
+      <!--个人信息-->
       <div class="info">
         <div class="head-icon">
           <!-- 通过 class-prefix 指定类名为 my-icon -->
-          <svg class="icon w50 h50" aria-hidden="true">
+          <svg class="icon w45 h45" aria-hidden="true">
             <use xlink:href="#icon-icon-test"></use>
           </svg>
+        </div>
+        <div class="head-content">
+          <!-- 通过 class-prefix 指定类名为 my-icon -->
+          <svg class="icon w59 h25" aria-hidden="true">
+            <use xlink:href="#icon-chuangxiangzuanshivip"></use>
+          </svg>
+          <div class="head-content-text">距<span>V6</span>还差<span>3223</span>点经验值
+          </div>
+        </div>
+        <div class="head-end">
+          我的积分 28
+        </div>
+      </div>
+
+      <!--自取 外卖-->
+      <div class="type-content">
+        <div class="item">
+          <svg class="icon w35 h35" aria-hidden="true">
+            <use xlink:href="#icon-jiancansushi"></use>
+          </svg>
+          <div class="title mt5">自取</div>
+        </div>
+        <div class="item">
+          <svg class="icon w35 h35" aria-hidden="true">
+            <use xlink:href="#icon-tongchengwaimai"></use>
+          </svg>
+          <div class="title mt5">外卖</div>
+        </div>
+      </div>
+
+
+      <!-- 积分商城 邀请好友 宠物-->
+      <div class="action-content">
+        <div class="item mr10">
+          <div class="title">积分商城</div>
+          <div class="des mb25 mt2">兑限量周边</div>
+          <svg class="icon w25 h25 item-icon" aria-hidden="true">
+            <use xlink:href="#icon-huiyuanjifen"></use>
+          </svg>
+        </div>
+        <div class="item mr10">
+          <div class="title">储值有礼</div>
+          <div class="des mb25 mt2 ellipsis-1">储值100赠送10元</div>
+          <svg class="icon w25 h25 item-icon" aria-hidden="true">
+            <use xlink:href="#icon-yinhangka"></use>
+          </svg>
+        </div>
+        <div class="item">
+          <div class="title">粉丝星球</div>
+          <div class="des mb25 mt2">快乐的交流星</div>
+          <svg class="icon w25 h25 item-icon" aria-hidden="true">
+            <use xlink:href="#icon-xingqiu"></use>
+          </svg>
+        </div>
+      </div>
+
+      <!--美食推荐-->
+      <div class="food-content">
+        <!--标题-->
+        <div class="flex row-between">
+          <span>会员新鲜事</span>
+          <div class="row-right">
+            <span class="color-border">更多</span>
+            <van-icon name="arrow" class="color-border"/>
+          </div>
+        </div>
+        <!--内容-->
+        <div class="item">
+          <van-image src="https://img-shop.qmimg.cn/s23107/2020/04/27/0039bf41c9ebd50a2c.jpg" radius="5px" height="120px" class="w-100"></van-image>
+          <div class="title">"梅"你不行 | 霸气杨梅清爽回归</div>
         </div>
       </div>
     </div>
@@ -27,12 +98,6 @@
 
   .home {
 
-    .bg {
-      height: 300px;
-      width: 100%;
-      background-color: #FEBD4A;
-    }
-
 
     .content {
       padding: 0 15px;
@@ -49,19 +114,42 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        .head-icon{
+
+        .head-icon {
           display: flex;
           align-items: center;
         }
+
+        .head-content {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          padding-left: 10px;
+          color: $color-grey;
+
+          &-text {
+            display: flex;
+            justify-content: flex-start;
+            position: relative;
+            zoom: 0.9;
+
+            span {
+              padding-left: 2px;
+              padding-right: 2px;
+              color: $color-theme;
+            }
+          }
+        }
       }
-/*      .entrance {
+
+      .type-content {
         position: relative;
-        margin-top: -80px;
-        margin-bottom: 30px;
-        border-radius: 10px;
+        border-radius: 5px;
         background-color: #ffffff;
         box-shadow: $box-shadow;
-        padding: 30px 0;
+        padding: 15px 0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -69,10 +157,9 @@
         .item {
           flex: 1;
           display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
           position: relative;
+          flex-direction: column;
+          align-items: center;
 
           &:nth-child(1):after {
             content: '';
@@ -84,163 +171,67 @@
             transform: scaleX(0.5) scaleY(0.8);
           }
 
-          .icon {
-            width: 84px;
-            height: 84px;
-            margin: 20px;
-          }
-
           .title {
-            font-size: 30px;
-            color: $text-color-base;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 500;
           }
         }
       }
 
-
-
-        .qrcode_section {
-          color: $color-primary;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          font-size: $font-size-sm;
-
-          image {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 10px;
-          }
-        }
-      }
-
-
-      .navigators {
-        margin-bottom: 20px;
-        border-radius: 10px;
-        background-color: #ffffff;
-        box-shadow: $box-shadow;
-        padding: 20px;
+      .action-content {
+        position: relative;
+        padding: 15px 0;
         display: flex;
-        align-items: stretch;
+        align-items: center;
+        justify-content: space-between;
 
-        .left {
+        .item {
           flex: 1;
-          margin-right: 20px;
           display: flex;
-          padding: 0 20px;
+          position: relative;
+          align-items: flex-start;
           flex-direction: column;
-          font-size: $font-size-sm;
-          color: $text-color-base;
-          background-color: #F2F2E6;
+          padding: 10px;
+          box-shadow: $box-shadow;
+          border-radius: 5px;
 
-          .grid {
-            height: 50%;
-            display: flex;
-          }
-        }
-
-        .right {
-          flex: 1;
-          height: 270px;
-          display: flex;
-          flex-direction: column;
-
-          .tea-activity,
-          .member-gifts {
-            width: 100%;
-            display: flex;
-            padding: 20px;
-            font-size: $font-size-sm;
-            color: $text-color-base;
-            align-items: center;
-            position: relative;
-            box-sizing: border-box;
+          .des {
+            zoom: 0.9;
+            color: $color-border;
           }
 
-          .tea-activity {
-            align-self: flex-start;
-            background-color: #FDF3F2;
-            margin-bottom: 20px;
+          .item-icon {
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
           }
-
-          .member-gifts {
-            align-self: flex-end;
-            background-color: #FCF6D4;
-          }
-
-          .right-img {
-            flex: 1;
-            position: relative;
-            margin-left: 20px;
-            margin-right: -20px;
-            margin-bottom: -20px;
-            display: flex;
-            align-items: flex-end;
-
-            image {
-              width: 100%;
-            }
-          }
-        }
-
-        .mark-img {
-          width: 30px;
-          height: 30px;
-          margin-right: 10px;
-        }
-
-        .yzclh-img {
-          height: 122.96px;
-          width: 214.86px;
         }
       }
 
-      .member-news {
-        margin-bottom: 130px;
+      .food-content {
+        position: relative;
+        margin-bottom: 15px;
+        padding: 5px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
 
-        .header {
+        .item {
+          flex: 1;
           display: flex;
-          justify-content: space-between;
-          padding: 20px 0;
-
-          .title {
-            font-size: $font-size-lg;
+          position: relative;
+          align-items: flex-start;
+          flex-direction: column;
+          margin-top: 5px;
+          .title{
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: $white;
             font-weight: bold;
           }
-
-          .iconfont {
-            font-size: 52px;
-            color: $text-color-assist;
-          }
         }
-
-        .list {
-          display: flex;
-          flex-direction: column;
-
-          .item {
-            position: relative;
-            height: 240px;
-
-            .title {
-              color: #ffffff;
-              font-weight: bold;
-              position: absolute;
-              left: 20px;
-              bottom: 20px;
-            }
-
-            image {
-              border-radius: 10px;
-              height: 100%;
-              width: 100%;
-            }
-          }
-        }
-      }*/
+      }
     }
 
 

@@ -1,10 +1,9 @@
 // 所有设置为怪异盒模型
 * {
   box-sizing: border-box;
-
   &::-webkit-scrollbar {
-    // width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
-    // height: 4px;
+     //width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+     //height: 4px;
 
     display: none; /* Chrome Safari */
   }

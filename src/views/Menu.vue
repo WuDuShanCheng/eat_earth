@@ -34,9 +34,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import {getCurrentInstance,onBeforeMount } from 'vue'
-
   export default {
     name: "Menu",
     setup(){
@@ -44,14 +43,11 @@
       const { proxy } = getCurrentInstance()
       //获取state
       const storeState = proxy.useState(["orderType","store"])
-      const storeAction = proxy.useAction(["getStore"])
       //初始化方法
       onBeforeMount(() => {
-        getStore()
       })
       return {
-        ...storeState,
-        ...storeAction
+        ...storeState
       }
     }
   }

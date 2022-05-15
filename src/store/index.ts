@@ -14,28 +14,28 @@ const store = createStore({
 	},
 	getters:{
 		//是否登录
-		isLogin:state=>Object.keys(state.member).length > 0
+		isLogin:(state:any)=>Object.keys(state.member).length > 0
 	},
 	mutations: {
-		SET_ORDER_TYPE(state, type) {
+		SET_ORDER_TYPE(state :any, type) {
 			state.orderType = type
 		},
-		SET_MEMBER(state, member) {
+		SET_MEMBER(state :any, member) {
 			state.member = member
 		},
-		SET_ADDRESS(state, address) {
+		SET_ADDRESS(state :any, address) {
 			state.address = address
 		},
-		SET_STORE(state, store) {
+		SET_STORE(state :any, store) {
 			state.store = store
 		},
-		SET_CART(state, cart) {
+		SET_CART(state :any, cart) {
 			state.cart = cart
 		},
 		REMOVE_CART(state) {
 			state.cart = []
 		},
-		SET_ORDER(state, order) {
+		SET_ORDER(state :any, order) {
 			state.order = order
 		}
 	},

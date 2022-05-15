@@ -16,9 +16,9 @@ import {getRandomCode,useState,useAction} from '@/utils/globalMethods'
 
 const app = createApp(App)
 
-app.config.globalProperties.useState=useState
-app.config.globalProperties.useAction=useAction
-app.config.globalProperties.getRandomCode=getRandomCode
+// app.config.globalProperties.useState=useState
+// app.config.globalProperties.useAction=useAction
+// app.config.globalProperties.getRandomCode=getRandomCode
 
 app.use(router)
 

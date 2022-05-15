@@ -4,19 +4,19 @@
   <NavBar v-if="show" />
 </template>
 
-<script>
+<script lang="ts">
   import NavBar from './components/NavBar.vue';
   import { reactive, toRefs } from 'vue'
   export default {
     name: 'App',
-    components: {
+  components: {
       NavBar
-    },
+  },
     setup() {
       const state = reactive({
         menu: ['/home', '/menu'],
         show: true
-      })
+})
 
       return {
         ...toRefs(state)

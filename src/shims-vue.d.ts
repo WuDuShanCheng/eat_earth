@@ -2,9 +2,10 @@
 declare module '*.vue' {
   import { defineComponent } from 'vue'
   const Component: ReturnType<typeof defineComponent>
-  export default Component
+  export {Component}
 }
 
+export {}
 
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {

@@ -7,7 +7,7 @@
   <div>
     <div class="nav">
       <div class="header">
-        <div class="left" v-if="orderType == 'takein'">
+        <div class="left" v-if="getOrderType == 'takein'">
           <div class="store-name">
             <text>{{ store.name }}</text>
             <div class="iconfont iconarrow-right"></div>
@@ -18,10 +18,10 @@
         </div>
 
         <div class="right">
-          <div class="dinein" :class="{active: orderType == 'takein'}" @tap="SET_ORDER_TYPE('takein')">
+          <div class="dinein" :class="{active: getOrderType == 'takein'}" @tap="SET_ORDER_TYPE('takein')">
             <text>自取</text>
           </div>
-          <div class="takeout" :class="{active: orderType == 'takeout'}" @tap="takout">
+          <div class="takeout" :class="{active: getOrderType == 'takeout'}" @tap="takout">
             <text>外卖</text>
           </div>
         </div>
@@ -35,22 +35,22 @@
 </template>
 
 <script lang="ts">
-  import {getCurrentInstance,onBeforeMount } from 'vue'
-  export default {
-    name: "Menu",
-    setup(){
-      // proxy相当于 vue2的this，从getCurrentInstance 实例中获取，proxy对象
-      const { proxy } = getCurrentInstance()
-      //获取state
-      const storeState = proxy.useState(["orderType","store"])
-      //初始化方法
-      onBeforeMount(() => {
-      })
-      return {
-        ...storeState
-      }
+    import { useLayoutStore } from '@/store/modules/layout'
+    import { onBeforeMount} from 'vue'
+
+    export default {
+        name: "Menu",
+        setup() {
+            // proxy相当于 vue2的this，从getCurrentInstance 实例中获取，proxy对象
+            const {getOrderType} = useLayoutStore()
+            //初始化方法
+            onBeforeMount(() => {
+            })
+            return {
+                getOrderType
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>

@@ -16,10 +16,14 @@ export const useLayoutStore = defineStore({
         getOrderType():string {
             return this.orderType
         },
+        getStore():any{
+            return this.store
+        }
     },
     actions: {
         async updateName() {
             const store = await api('store')
+            console.log('11')
             this.SET_STORE(store)
         },
         SET_ORDER_TYPE(type: any) {

@@ -1,6 +1,6 @@
 
-.van-tabbar-item{
-  &__text{
+.van-tabbar-item {
+  &__text {
     transform: scale(0.8);
   }
 }
@@ -8,4 +8,10 @@
 :root {
   --van-tabbar-item-active-color: #{$color-theme} !important;
   --van-tabbar-item-text-color: #{$color-theme-grey} !important;
+  //菜单页
+  --van-button-mini-height: 19px !important;
+  --van-notice-bar-icon-size: 10px !important;
+  --van-tabbar-z-index: 100 !important;
+  --van-background-color: #f6f6f6 !important;
+  --van-sidebar-selected-border-color: #{$color-theme} !important;
 }

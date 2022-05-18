@@ -5,7 +5,7 @@ import router from './router'
 import 'lib-flexible/flexible'
 import { Button, Tabbar, TabbarItem, Form, Field, Icon, NavBar, Cell, CellGroup, Popup, List, PullRefresh, DatetimePicker,
     NumberKeyboard, Dialog, Progress, Rate, Divider,Col, Row ,Image as VanImage,NoticeBar,Sticky,Tabs,Tab,
-    Sidebar, SidebarItem,Swipe, SwipeItem  } from 'vant';
+    Sidebar, SidebarItem,Swipe, SwipeItem,ConfigProvider   } from 'vant';
 // 全局样式
 import '@/scss/index.scss'
 // 框架引入样式
@@ -57,6 +57,7 @@ app.use(Sidebar)
 app.use(SidebarItem);
 app.use(Swipe);
 app.use(SwipeItem);
+app.use(ConfigProvider);
 
 
 

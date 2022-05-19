@@ -1,8 +1,9 @@
 import store from './store'
 import goods from './goods'
-const json:any = {
+const json = {
 	store,
 	goods
 }
 
-export default (name:any) => new Promise((resolve:any) => (resolve(json[name]), 500))
+// @ts-ignore
+export default (name:any) => new Promise(resolve => (resolve(json[name]), 500))

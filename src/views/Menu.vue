@@ -22,9 +22,9 @@
           </div>
 
           <div class="right">
-            <van-button hairline :color="[getOrderType == 'takein'?'#BBBBBB':'#F2F2F2']" size="mini"
+            <van-button hairline :color="(getOrderType == 'takein'?'#BBBBBB':'#F2F2F2')" size="mini"
                         :class="[getOrderType == 'takein'?'active':'no-active']"><span>自取</span></van-button>
-            <van-button hairline :color="[getOrderType == 'takeout'?'#BBBBBB':'#F2F2F2']" size="mini"
+            <van-button hairline :color="(getOrderType == 'takeout'?'#BBBBBB':'#F2F2F2')" size="mini"
                         :class="[getOrderType == 'takeout'?'active':'no-active']"><span>外卖</span></van-button>
           </div>
         </div>
@@ -45,7 +45,7 @@
                   </div>
                 </van-sidebar>
               </div>
-              <div id="goodScroll" style="flex: 1;overflow:hidden;height: 300px ">
+              <div id="goodScroll" style="flex: 1;overflow:hidden;height: 100vh ">
                 <div class="menu-goods" >
                   <!--轮播图-->
                   <van-swipe class="ads" :autoplay="3000">
@@ -118,7 +118,7 @@
 
 <script lang="ts">
     import {useLayoutStore} from '@/store/modules/layout'
-    import {reactive, toRefs, ref, getCurrentInstance, computed, onMounted, nextTick} from 'vue'
+    import {computed, getCurrentInstance, nextTick, onMounted, reactive, toRefs} from 'vue'
     import Bscroll from 'better-scroll'
 
     export default {
@@ -182,7 +182,6 @@
             }
             //添加商品
             const handleAddFromCart = (cate: any, good: any, num: number = 1) => {
-                console.log('add')
                 const index = state.cart.findIndex((item: any) => {
                     if (good.use_property) {
                         return (item.id === good.id) && (item.props_text === good.props_text)
@@ -207,23 +206,59 @@
                 }
             }
 
+            //计算商品高度
+           const calculateMItemHeight=()=> {
+                //初始高度
+               let height = (document.querySelector(`.ads`) as any).offsetHeight
+
+               let frist :boolean = true
+               for (const item of state.goods as any) {
+                   let view = document.querySelector(`#cate-${item.id}`) as any
+                   //第一个控件
+                   if (frist==true){
+                       frist=false
+                       item['top']= 0
+                       height += view.offsetHeight
+                       item['bottom'] = height
+                   }else{
+                       item['top']= height
+                       height += view.offsetHeight
+                       item['bottom'] = height
+                   }
+               }
+
+            }
+
+            let bscroll:any = null
+            //点击侧边菜单
+            const scrollTo=(index:number)=>{
+                const goods = state.goods as [];
+                const {id} = goods[index];
+                (bscroll as any).scrollToElement(document.querySelector(`#cate-${id}`))
+            }
+
             onMounted(async () => {
                 //初始化方法 获取商城信息
                 await updateName()
-                state.goods = await proxy.$api('goods') as any
+                state.goods = await proxy.$api('goods')
                 await nextTick(async () => {
-                    let bscroll = new Bscroll(document.querySelector('#goodScroll') as any , {
+                    bscroll = new Bscroll(document.querySelector('#goodScroll') as any , {
                         scrollY:true,
+                        click:true,
                         probeType: 3,
                         mouseWheel:true
                     })
 
-                    //上拉加载数据
-                    bscroll.on('scroll', () => {
-                        console.log('xxx')
+                    //滑动回调
+                    bscroll.on('scroll', (node :any) => {
+                        let scrollNumber = - node.y
+                        let tabs = (state.goods as any).filter((item: { top: number }) => item.top <= scrollNumber)
+                        state.navIndex = tabs.length -1
                     })
-                })
 
+                    //计算每个菜单的高度
+                    calculateMItemHeight()
+                })
 
             })
 
@@ -233,6 +268,7 @@
                 handleReduceFromCart,
                 goodCartNum,
                 handleAddFromCart,
+                scrollTo,
                 getOrderType,
                 getStore,
                 updateName

@@ -20,7 +20,6 @@ import { pinia } from '@/store'
 import {getRandomCode} from '@/utils/globalMethods'
 import api from '@/api'
 
-
 const app = createApp(App)
 app.config.globalProperties.getRandomCode=getRandomCode
 app.config.globalProperties.$api=api

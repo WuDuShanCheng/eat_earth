@@ -23,7 +23,6 @@ export const useLayoutStore = defineStore({
     actions: {
         async updateName() {
             const store = await api('store')
-            console.log('11')
             this.SET_STORE(store)
         },
         SET_ORDER_TYPE(type: any) {

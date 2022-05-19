@@ -41,64 +41,67 @@
               <div class="menu-slide vh-100">
                 <van-sidebar v-model="navIndex">
                   <div v-for="(item, index) in goods" :key="index">
-                    <van-sidebar-item class="item-radius" :title="item.name"/>
+                    <van-sidebar-item class="item-radius" :title="item.name" @click="scrollTo(index)"/>
                   </div>
                 </van-sidebar>
               </div>
-              <div class="menu-goods">
-                <!--轮播图-->
-                <van-swipe class="ads" :autoplay="3000">
-                  <van-swipe-item v-for="(item,index) in ads" :key="index">
-                    <van-image :src="item.image" fit="cover">
-                    </van-image>
-                  </van-swipe-item>
-                </van-swipe>
-                <!--商品-->
-                <div class="list">
-                  <!-- category begin -->
-                  <div class="category" v-for="(item, index) in goods" :key="index" :id="`cate-${item.id}`">
-                    <div class="title">
-                      <span>{{ item.name }}</span>
+              <div id="goodScroll" style="flex: 1;overflow:hidden ">
+                <div class="menu-goods"  ref="goodScroll">
+                  <!--轮播图-->
+                  <van-swipe class="ads" :autoplay="3000">
+                    <van-swipe-item v-for="(item,index) in ads" :key="index">
+                      <van-image :src="item.image" fit="cover">
+                      </van-image>
+                    </van-swipe-item>
+                  </van-swipe>
+                  <!--商品-->
+                  <div class="list" id="good-list">
+                    <!-- category begin -->
+                    <div class="category" v-for="(item, index) in goods" :key="index" :id="`cate-${item.id}`">
+                      <div class="title">
+                        <span>{{ item.name }}</span>
 
-                      <van-image
-                        class="ml3"
-                        v-if="item.icon!==''"
-                        width="13px"
-                        height="13px"
-                        fit="contain"
-                        :src="item.icon"
-                      />
-                    </div>
-                    <div class="items">
-                      <!-- 商品 begin -->
-                      <div class="good mb10" v-for="(good, key) in item.goods_list" :key="key">
-                        <van-image fit="cover" :src="good.images" height="100px" width="100px" radius="5px">
-                        </van-image>
-                        <div class="right">
-                          <span class="name">{{ good.name }}</span>
-                          <span class="tips ellipsis-2">{{ good.content }}</span>
-                          <div class="price_and_action">
-                            <span class="price"><span>￥</span><span>{{ good.price }}</span></span>
-                            <div class="btn-group" v-if="good.use_property">
-                              <div class="pro-button">
-                                <span>选规格</span>
+                        <van-image
+                          class="ml3"
+                          v-if="item.icon!==''"
+                          width="13px"
+                          height="13px"
+                          fit="contain"
+                          :src="item.icon"
+                        />
+                      </div>
+                      <div class="items">
+                        <!-- 商品 begin -->
+                        <div class="good mb10" v-for="(good, key) in item.goods_list" :key="key">
+                          <van-image fit="cover" :src="good.images" height="100px" width="100px" radius="5px">
+                          </van-image>
+                          <div class="right">
+                            <span class="name">{{ good.name }}</span>
+                            <span class="tips ellipsis-2">{{ good.content }}</span>
+                            <div class="price_and_action">
+                              <span class="price"><span>￥</span><span>{{ good.price }}</span></span>
+                              <div class="btn-group" v-if="good.use_property">
+                                <div class="pro-button">
+                                  <span>选规格</span>
+                                </div>
                               </div>
-                            </div>
-                            <div class="btn-group" v-else>
-                              <div class="class-button-add" v-show="goodCartNum(good.id)" @click="handleAddFromCart(item,good)">
-                                <van-icon name="plus" class="class-button-add-icon"/>
-                              </div>
-                              <div class="number" v-show="goodCartNum(good.id)">
-                                {{ goodCartNum(good.id) }}
-                              </div>
-                              <div class="class-button-add" @click="handleAddFromCart(item,good)">
-                                <van-icon name="plus" class="class-button-add-icon"/>
+                              <div class="btn-group" v-else>
+                                <div class="class-button-minus" v-show="goodCartNum(good.id)"
+                                     @click="handleReduceFromCart(item,good)">
+                                  <van-icon name="minus" class="class-button-minus-icon"/>
+                                </div>
+                                <div class="number" v-show="goodCartNum(good.id)">
+                                  {{ goodCartNum(good.id) }}
+                                </div>
+                                <div class="class-button-add" @click="handleAddFromCart(item,good)">
+                                  <van-icon name="plus" class="class-button-add-icon"/>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
+                        <!-- 商品 end -->
                       </div>
-                      <!-- 商品 end -->
                     </div>
                   </div>
                 </div>
@@ -115,7 +118,8 @@
 
 <script lang="ts">
     import {useLayoutStore} from '@/store/modules/layout'
-    import {reactive, toRefs, onBeforeMount, getCurrentInstance,computed} from 'vue'
+    import {reactive, toRefs, ref, getCurrentInstance, computed, onMounted, nextTick} from 'vue'
+    import Bscroll from 'better-scroll'
 
     export default {
         name: "Menu",
@@ -132,6 +136,7 @@
                 goods: {},
                 //购物车
                 cart: [] as any,
+                //右边下拉索引
                 //广告栏
                 ads: [
                     {
@@ -160,7 +165,7 @@
             }
             //计算单个饮品添加到购物车的数量
             const goodCartNum = computed(() => {
-                return (id:any) => state.cart.reduce((acc:any, cur:any) => {
+                return (id: any) => state.cart.reduce((acc: any, cur: any) => {
                     if (cur.id === id) {
                         return acc += cur.number
                     }
@@ -168,7 +173,12 @@
                 }, 0)
             })
             //删除商品
-            const handleReduceFromCart = () => {
+            const handleReduceFromCart = (item: any, good: any) => {
+                const index = state.cart.findIndex((item: any) => item.id === good.id)
+                state.cart[index].number -= 1
+                if (state.cart[index].number <= 0) {
+                    state.cart.splice(index, 1)
+                }
             }
             //添加商品
             const handleAddFromCart = (cate: any, good: any, num: number = 1) => {
@@ -196,12 +206,28 @@
                     })
                 }
             }
-            //初始化方法 获取商城信息
-            onBeforeMount(async () => {
+
+            onMounted(async () => {
+                //初始化方法 获取商城信息
                 await updateName()
                 state.goods = await proxy.$api('goods') as any
-                console.log(state.goods)
+                await nextTick(async () => {
+                })
+
+                let bscroll = new Bscroll(document.querySelector('#goodScroll') as any , {
+                    scrollY: true,
+                    probeType: 3,
+                    click: true,
+                    pullUpLoad: true,
+                    mouseWheel: true
+                })
+
+                //上拉加载数据
+                bscroll.on('scroll', () => {
+                    console.log('xxx')
+                })
             })
+
             return {
                 ...toRefs(state),
                 ...vantRest,
@@ -290,11 +316,10 @@
     }
 
     .menu-goods {
-      height: 100vh;
+      height: 50vh;
       flex: 1;
       margin-left: 5px;
       margin-right: 5px;
-      overflow-y: scroll;
 
       .ads {
         width: 100%;
@@ -380,22 +405,38 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
+
                     .pro-button {
                       display: flex;
                       justify-content: center;
                       align-items: center;
                       border-radius: 10px;
-                      background-image: linear-gradient(to bottom, #FEBD4A 0%, #fddb9a 100%);
+                      background-image: linear-gradient(to bottom, #FEBD4A 0%, #fdd486 100%);
                       padding: 5px 8px;
 
                       span {
                         font-size: $font-mini;
                         color: white;
-                        zoom: 0.9;
+                        zoom: 0.75;
+                        letter-spacing: 0.5px;
                       }
                     }
 
                     .class-button {
+                      &-minus {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 3px;
+                        border-radius: 30px;
+                        border: $color-border 1px solid;
+
+                        &-icon {
+                          font-size: $font-mini;
+                          color: $color-border;
+                        }
+                      }
+
                       &-add {
                         display: flex;
                         justify-content: center;
@@ -411,7 +452,8 @@
                         }
                       }
                     }
-                    .number{
+
+                    .number {
                       padding: 0px 5px;
                     }
                   }

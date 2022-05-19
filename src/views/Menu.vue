@@ -45,8 +45,8 @@
                   </div>
                 </van-sidebar>
               </div>
-              <div id="goodScroll" style="flex: 1;overflow:hidden ">
-                <div class="menu-goods"  ref="goodScroll">
+              <div id="goodScroll" style="flex: 1;overflow:hidden;height: 300px ">
+                <div class="menu-goods" >
                   <!--轮播图-->
                   <van-swipe class="ads" :autoplay="3000">
                     <van-swipe-item v-for="(item,index) in ads" :key="index">
@@ -212,20 +212,19 @@
                 await updateName()
                 state.goods = await proxy.$api('goods') as any
                 await nextTick(async () => {
+                    let bscroll = new Bscroll(document.querySelector('#goodScroll') as any , {
+                        scrollY:true,
+                        probeType: 3,
+                        mouseWheel:true
+                    })
+
+                    //上拉加载数据
+                    bscroll.on('scroll', () => {
+                        console.log('xxx')
+                    })
                 })
 
-                let bscroll = new Bscroll(document.querySelector('#goodScroll') as any , {
-                    scrollY: true,
-                    probeType: 3,
-                    click: true,
-                    pullUpLoad: true,
-                    mouseWheel: true
-                })
 
-                //上拉加载数据
-                bscroll.on('scroll', () => {
-                    console.log('xxx')
-                })
             })
 
             return {
@@ -316,10 +315,10 @@
     }
 
     .menu-goods {
-      height: 50vh;
       flex: 1;
       margin-left: 5px;
       margin-right: 5px;
+      /*overflow-y: scroll;*/
 
       .ads {
         width: 100%;

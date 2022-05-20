@@ -10,6 +10,8 @@ import { Button, Tabbar, TabbarItem, Form, Field, Icon, NavBar, Cell, CellGroup,
 
 // 全局样式
 import '@/scss/index.scss'
+//全局注册组件
+import register from "@/utils/globalRegister";
 // 框架引入样式
 import 'vant/lib/index.css';
 //引入图标
@@ -60,7 +62,7 @@ app.use(Swipe);
 app.use(SwipeItem);
 app.use(ConfigProvider);
 
-
+register(app,import.meta.globEager('./*.vue'))
 
 
 app.mount('#app')

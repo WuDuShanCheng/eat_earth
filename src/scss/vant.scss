@@ -5,6 +5,10 @@
   }
 }
 
+.van-tabs__line{
+  z-index: 0 !important;
+}
+
 :root {
   --van-tabbar-item-active-color: #{$color-theme} !important;
   --van-tabbar-item-text-color: #{$color-theme-grey} !important;

@@ -4,7 +4,7 @@
  * @Date: 2022/5/14 19:53
 -->
 <template>
-  <div>
+  <div class="menu-root">
     <van-nav-bar title="浩子来点餐"/>
     <div class="nav">
       <van-config-provider :theme-vars="headVar">
@@ -46,7 +46,7 @@
                 </van-sidebar>
               </div>
               <div id="goodScroll" style="flex: 1;overflow:hidden;height: 100vh ">
-                <div class="menu-goods" >
+                <div class="menu-goods">
                   <!--轮播图-->
                   <van-swipe class="ads" :autoplay="3000">
                     <van-swipe-item v-for="(item,index) in ads" :key="index">
@@ -81,7 +81,7 @@
                             <div class="price_and_action">
                               <span class="price"><span>￥</span><span>{{ good.price }}</span></span>
                               <div class="btn-group" v-if="good.use_property">
-                                <div class="pro-button">
+                                <div class="pro-button" @click="showGoodDetailModal(item, good)">
                                   <span>选规格</span>
                                 </div>
                               </div>
@@ -112,7 +112,9 @@
         </van-tabs>
       </van-config-provider>
     </van-sticky>
-
+    <van-popup v-model:show="popupShow" teleport="#popup" position="bottom" round :style="{ height: '75%' }">
+      <good-popup></good-popup>
+    </van-popup>
   </div>
 </template>
 
@@ -120,9 +122,11 @@
     import {useLayoutStore} from '@/store/modules/layout'
     import {computed, getCurrentInstance, nextTick, onMounted, reactive, toRefs} from 'vue'
     import Bscroll from 'better-scroll'
+    import GoodPopup from "@/components/menu/goodPopup.vue";
 
     export default {
         name: "Menu",
+        components: {GoodPopup},
         setup: function () {
             const {proxy} = getCurrentInstance() as any
             const {getOrderType, updateName, getStore} = useLayoutStore()
@@ -136,7 +140,12 @@
                 goods: {},
                 //购物车
                 cart: [] as any,
-                //右边下拉索引
+                //选择商品规格
+                popupShow: false,
+                //当前饮品
+                good: {},
+                //当前饮品所在分类
+                category: {},
                 //广告栏
                 ads: [
                     {
@@ -205,36 +214,45 @@
                     })
                 }
             }
-
             //计算商品高度
-           const calculateMItemHeight=()=> {
+            const calculateMItemHeight = () => {
                 //初始高度
-               let height = (document.querySelector(`.ads`) as any).offsetHeight
+                let height = (document.querySelector(`.ads`) as any).offsetHeight
 
-               let frist :boolean = true
-               for (const item of state.goods as any) {
-                   let view = document.querySelector(`#cate-${item.id}`) as any
-                   //第一个控件
-                   if (frist==true){
-                       frist=false
-                       item['top']= 0
-                       height += view.offsetHeight
-                       item['bottom'] = height
-                   }else{
-                       item['top']= height
-                       height += view.offsetHeight
-                       item['bottom'] = height
-                   }
-               }
+                let frist: boolean = true
+                for (const item of state.goods as any) {
+                    let view = document.querySelector(`#cate-${item.id}`) as any
+                    //第一个控件
+                    if (frist == true) {
+                        frist = false
+                        item['top'] = 0
+                        height += view.offsetHeight
+                        item['bottom'] = height
+                    } else {
+                        item['top'] = height
+                        height += view.offsetHeight
+                        item['bottom'] = height
+                    }
+                }
 
             }
-
-            let bscroll:any = null
+            //滑动控件
+            let bscroll: any = null
             //点击侧边菜单
-            const scrollTo=(index:number)=>{
+            const scrollTo = (index: number) => {
                 const goods = state.goods as [];
                 const {id} = goods[index];
                 (bscroll as any).scrollToElement(document.querySelector(`#cate-${id}`))
+            }
+
+            //展示商品详细弹框
+            const showGoodDetailModal= (item :any, good:any) => {
+                state.good = JSON.parse(JSON.stringify({
+                    ...good,
+                    number: 1
+                })) as any
+                state.category = JSON.parse(JSON.stringify(item))
+                state.popupShow = true
             }
 
             onMounted(async () => {
@@ -242,18 +260,18 @@
                 await updateName()
                 state.goods = await proxy.$api('goods')
                 await nextTick(async () => {
-                    bscroll = new Bscroll(document.querySelector('#goodScroll') as any , {
-                        scrollY:true,
-                        click:true,
+                    bscroll = new Bscroll(document.querySelector('#goodScroll') as any, {
+                        scrollY: true,
+                        click: true,
                         probeType: 3,
-                        mouseWheel:true
+                        mouseWheel: true
                     })
 
                     //滑动回调
-                    bscroll.on('scroll', (node :any) => {
-                        let scrollNumber = - node.y
+                    bscroll.on('scroll', (node: any) => {
+                        let scrollNumber = -node.y
                         let tabs = (state.goods as any).filter((item: { top: number }) => item.top <= scrollNumber)
-                        state.navIndex = tabs.length -1
+                        state.navIndex = tabs.length - 1
                     })
 
                     //计算每个菜单的高度
@@ -268,6 +286,7 @@
                 handleReduceFromCart,
                 goodCartNum,
                 handleAddFromCart,
+                showGoodDetailModal,
                 scrollTo,
                 getOrderType,
                 getStore,

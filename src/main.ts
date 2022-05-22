@@ -62,6 +62,7 @@ app.use(Swipe);
 app.use(SwipeItem);
 app.use(ConfigProvider);
 
+
 register(app,import.meta.globEager('./*.vue'))
 
 

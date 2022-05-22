@@ -7,7 +7,7 @@
 
 <script lang='ts'>
     // @ts-ignore
-    import NavBar from './components/NavBar.vue';
+    import NavBar from '@/components/NavBar.vue';
     import {reactive, toRefs} from 'vue'
 
     export default {

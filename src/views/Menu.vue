@@ -113,7 +113,34 @@
       </van-config-provider>
     </van-sticky>
     <van-popup v-model:show="popupShow" teleport="#popup" position="bottom" round :style="{ height: '75%' }">
-      <good-popup></good-popup>
+      <van-swipe class="popup-head" :autoplay="3000" indicator-color="white">
+        <van-swipe-item>
+          <div v-for="(item,index) in good.imageArr" :key="index" class="flex">
+            <van-image :src="item" width="100%" height="170px" fit="scale-down"></van-image>
+          </div>
+        </van-swipe-item>
+      </van-swipe>
+      <div class="popup-content">
+        <div class="basic">
+          <div class="name">{{ good.name }}</div>
+          <div class="tip">{{ good.content }}</div>
+        </div>
+
+        <div class="properties" v-if="good.use_property">
+          <div class="property" v-for="(item, index) in good.property" :key="index">
+            <div class="title">
+              <text class="name">{{ item.name }}</text>
+              <div class="desc" v-if="item.desc">({{ item.desc }})</div>
+            </div>
+            <div class="values">
+              <div class="value" v-for="(value, key) in item.values" :key="key"
+                    :class="{'default': value.is_default}" @tap="changePropertyDefault(index, key)">
+                {{ value.value }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </van-popup>
   </div>
 </template>
@@ -122,11 +149,12 @@
     import {useLayoutStore} from '@/store/modules/layout'
     import {computed, getCurrentInstance, nextTick, onMounted, reactive, toRefs} from 'vue'
     import Bscroll from 'better-scroll'
-    import GoodPopup from "@/components/menu/goodPopup.vue";
+    // @ts-ignore
+    // import GoodPopup from '@/components/menu/goodPopup.vue';
 
     export default {
         name: "Menu",
-        components: {GoodPopup},
+        // components: {GoodPopup},
         setup: function () {
             const {proxy} = getCurrentInstance() as any
             const {getOrderType, updateName, getStore} = useLayoutStore()
@@ -246,7 +274,7 @@
             }
 
             //展示商品详细弹框
-            const showGoodDetailModal= (item :any, good:any) => {
+            const showGoodDetailModal = (item: any, good: any) => {
                 state.good = JSON.parse(JSON.stringify({
                     ...good,
                     number: 1
@@ -304,6 +332,36 @@
     --van-tabbar-z-index: 100 !important;
     --van-background-color: #f6f6f6 !important;
     --van-sidebar-selected-border-color: #{$color-theme} !important;
+  }
+
+  .popup-head .van-swipe-item {
+    color: #fff;
+    font-size: 20px;
+    line-height: 150px;
+    text-align: center;
+  }
+
+  .popup-content{
+    padding: 15px 20px;
+    .basic{
+      padding-bottom: 10px;
+      .name{
+        font-size: $font-middle;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        color: black;
+        margin-bottom: 15px;
+      }
+      .tip{
+        font-size: $font-mini;
+        color: $menu-popup-tip;
+        letter-spacing: 0.3px;
+      }
+    }
+
+    .properties{
+      padding-top: 10px;;
+    }
   }
 
   .nav {

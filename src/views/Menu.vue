@@ -112,7 +112,7 @@
         </van-tabs>
       </van-config-provider>
     </van-sticky>
-    <van-popup v-model:show="popupShow" teleport="#popup" position="bottom" round :style="{ height: '75%' }">
+    <van-popup v-model:show="popupShow" teleport="#popup" position="bottom" round :style="{ height: '85%',overflowY:'scroll' }">
       <van-swipe class="popup-head" :autoplay="3000" indicator-color="white">
         <van-swipe-item>
           <div v-for="(item,index) in good.imageArr" :key="index" class="flex">
@@ -129,16 +129,34 @@
         <div class="properties" v-if="good.use_property">
           <div class="property" v-for="(item, index) in good.property" :key="index">
             <div class="title">
-              <text class="name">{{ item.name }}</text>
-              <div class="desc" v-if="item.desc">({{ item.desc }})</div>
+              <div class="name">{{ item.name }}</div>
+              <div class="desc ml5" v-if="item.desc">({{ item.desc }})</div>
             </div>
             <div class="values">
               <div class="value" v-for="(value, key) in item.values" :key="key"
-                    :class="{'default': value.is_default}" @tap="changePropertyDefault(index, key)">
+                   :class="{'default': value.is_default}" @click="changePropertyDefault(index, key)">
                 {{ value.value }}
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <!--加入购物车-->
+      <div class="popup-card">
+        <div class="btn-group">
+          <div class="class-button-minus" @click="handlePropertyReduce">
+            <van-icon name="minus" class="class-button-minus-icon"/>
+          </div>
+          <div class="number">
+            {{ good.number }}
+          </div>
+          <div class="class-button-add" @click="handlePropertyAdd">
+            <van-icon name="plus" class="class-button-add-icon"/>
+          </div>
+        </div>
+        <div class="add-to-cart-btn" @click="handleAddToCartInModal">
+          <div>￥<span class="money">{{good.price * good.number }}</span></div>
+          <div>加入购物车</div>
         </div>
       </div>
     </van-popup>
@@ -283,6 +301,75 @@
                 state.popupShow = true
             }
 
+            //购物车减
+            const handlePropertyReduce = () => {
+                if ((state.good as any).number === 1) return
+                (state.good as any).number -= 1
+            }
+
+            //购物车加
+            const handlePropertyAdd = () => {
+                (state.good as any).number += 1
+            }
+
+            //加入购物车
+            const handleAddToCartInModal = () => {
+                const product = Object.assign({}, state.good, {
+                    props_text: getGoodSelectedProps(state.good),
+                    props: getGoodSelectedProps(state.good, 'id')
+                })
+                handleAddToCart(state.category, product, (state.good as any).number)
+            }
+
+            //添加到购物车
+            const handleAddToCart = (cate: any, good: any, num: any) => {
+                const index = state.cart.findIndex((item: any) => {
+                    if (good.use_property) {
+                        return (item.id === good.id) && (item.props_text === good.props_text)
+                    } else {
+                        return item.id === good.id
+                    }
+                })
+                if (index > -1) {
+                    state.cart[index].number += num
+                } else {
+                    state.cart.push({
+                        id: good.id,
+                        cate_id: cate.id,
+                        name: good.name,
+                        price: good.price,
+                        number: num,
+                        image: good.images,
+                        use_property: good.use_property,
+                        props_text: good.props_text,
+                        props: good.props
+                    })
+                }
+            }
+
+            //计算当前饮品所选属性
+            const getGoodSelectedProps = (good: any, type = 'text') => {
+                if (good.use_property) {
+                    let props: any[] = []
+                    good.property.forEach(({values}: any) => {
+                        values.forEach((value: any) => {
+                            if (value.is_default) {
+                                props.push(type === 'text' ? value.value : value.id)
+                            }
+                        })
+                    })
+                    return type === 'text' ? props.join('，') : props
+                }
+                return ''
+            }
+
+            //改变默认属性值
+            const changePropertyDefault = (index :any, key :any) =>{
+                (state.good as any).property[index].values.forEach((value:any) => value.is_default = 0);
+                ((state.good as any).property[index].values[key] as any).is_default = 1 ;
+                (state.good as any).number = 1
+            }
+
             onMounted(async () => {
                 //初始化方法 获取商城信息
                 await updateName()
@@ -315,6 +402,12 @@
                 goodCartNum,
                 handleAddFromCart,
                 showGoodDetailModal,
+                handlePropertyReduce,
+                handlePropertyAdd,
+                handleAddToCartInModal,
+                handleAddToCart,
+                getGoodSelectedProps,
+                changePropertyDefault,
                 scrollTo,
                 getOrderType,
                 getStore,
@@ -341,26 +434,181 @@
     text-align: center;
   }
 
-  .popup-content{
+  .popup-content {
     padding: 15px 20px;
-    .basic{
+    margin-bottom: calc(var(--van-tabbar-height) + 90px);
+    .basic {
       padding-bottom: 10px;
-      .name{
+
+      .name {
         font-size: $font-middle;
         font-weight: bold;
         letter-spacing: 0.5px;
         color: black;
         margin-bottom: 15px;
       }
-      .tip{
+
+      .tip {
         font-size: $font-mini;
         color: $menu-popup-tip;
         letter-spacing: 0.3px;
       }
     }
 
-    .properties{
-      padding-top: 10px;;
+    .properties {
+      padding-top: 10px;
+
+      .property {
+        .title {
+          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-bottom: 10px;
+
+          .name {
+            display: flex;
+            align-items: center;
+            font-size: $font-mini;
+            color: black;
+            font-weight: bold;
+
+            &:nth-child(1):after {
+              content: '必选';
+              color: white;
+              padding: 3px;
+              position: relative;
+              margin-left: 4px;
+              background-color: $color-theme;
+              border-top-left-radius: 50px;
+              border-top-right-radius: 50px;
+              border-bottom-right-radius: 50px;
+              zoom: 0.7;
+              width: 25px;
+            }
+          }
+
+          .desc {
+            flex: 1;
+            font-size: $font-mini;
+            color: $color-theme;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            zoom: 0.9;
+          }
+        }
+
+        .values {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+
+          .value {
+            border-radius: 4px;
+            background-color: $menu-content-bg;
+            color: $text-color-assist;
+            padding: 8px 15px;
+            font-size: $font-mini;
+            margin-right: 8px;
+            margin-bottom: 8px;
+
+            &.default {
+              background-color: $color-theme;
+              color: $text-color-white;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .popup-card {
+    width: 100%;
+    height: 90px;
+    position: fixed;
+    bottom: var(--van-tabbar-height);
+    box-shadow: $box-shadow;
+    background-color: white;
+
+    .btn-group {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      position: relative;
+      margin-right: 10px;
+      margin-top: 10px;
+
+      .pro-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        background-image: linear-gradient(to bottom, #FEBD4A 0%, #fdd486 100%);
+        padding: 5px 8px;
+
+        span {
+          font-size: $font-mini;
+          color: white;
+          zoom: 0.75;
+          letter-spacing: 0.5px;
+        }
+      }
+
+      .class-button {
+        &-minus {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 3px;
+          border-radius: 30px;
+          border: $color-border 1px solid;
+
+          &-icon {
+            font-size: $font-mini;
+            color: $color-border;
+          }
+        }
+
+        &-add {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 3px;
+          color: white;
+          border-radius: 30px;
+          background-image: linear-gradient(to bottom, #FEBD4A 0%, #fddb9a 100%);
+
+          &-icon {
+            font-size: $font-mini;
+            color: white;
+          }
+        }
+      }
+
+      .number {
+        padding: 0px 10px;
+      }
+    }
+
+    .add-to-cart-btn {
+      .money {
+        font-size: 18px;
+        margin-right: 5px;
+        font-weight: bold
+      }
+
+      height: 40px;
+      width: 80%;
+      margin-left: 10%;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $color-theme;
+      color: $text-color-white;
+      font-size: $font-mini;
+      border-radius: 50px
     }
   }
 

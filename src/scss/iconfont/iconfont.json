@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4961277",
+      "name": "茶",
+      "font_class": "tea",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "14852479",
+      "name": "袋泡茶",
+      "font_class": "daipaocha",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "25163573",
+      "name": "奶茶小吃",
+      "font_class": "naichaxiaochi",
+      "unicode": "fd4d",
+      "unicode_decimal": 64845
+    },
+    {
       "icon_id": "4719753",
       "name": "会员积分",
       "font_class": "huiyuanjifen",

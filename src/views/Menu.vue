@@ -112,7 +112,9 @@
         </van-tabs>
       </van-config-provider>
     </van-sticky>
-    <van-popup v-model:show="popupShow" teleport="#popup" position="bottom" round :style="{ height: '85%',overflowY:'scroll' }">
+    <!--选规格-->
+    <van-popup v-model:show="popupShow" teleport="#popup" position="bottom" round
+               :style="{ height: '85%',overflowY:'scroll' }">
       <van-swipe class="popup-head" :autoplay="3000" indicator-color="white">
         <van-swipe-item>
           <div v-for="(item,index) in good.imageArr" :key="index" class="flex">
@@ -160,6 +162,26 @@
         </div>
       </div>
     </van-popup>
+    <!-- 商品详情模态框 end -->
+    <!-- 购物车详情popup -->
+    <div class="cart-box">
+      <div class="mark">
+        <div class="head-content">
+          <svg class="icon w60 h60 mb20" aria-hidden="true">
+            <use xlink:href="#icon-naichaxiaochi"></use>
+          </svg>
+          <div class="tag">{{ getCartGoodsNumber() }}</div>
+        </div>
+        <div class="price">￥<span>{{ getCartGoodsPrice() }}</span></div>
+      </div>
+      <button class="pay-btn" :disabled="disabledPay()">
+        {{ disabledPay() ? `差${spread}元起送` : '去结算' }}
+      </button>
+      <!--      <div class="price">￥{{ getCartGoodsPrice() }}</div>-->
+      <!--      <button type="primary" class="pay-btn" @tap="toPay" :disabled="disabledPay()">-->
+      <!--        {{ disabledPay() ? `差${spread}元起送` : '去结算' }}-->
+      <!--      </button>-->
+    </div>
   </div>
 </template>
 
@@ -364,10 +386,25 @@
             }
 
             //改变默认属性值
-            const changePropertyDefault = (index :any, key :any) =>{
-                (state.good as any).property[index].values.forEach((value:any) => value.is_default = 0);
-                ((state.good as any).property[index].values[key] as any).is_default = 1 ;
+            const changePropertyDefault = (index: any, key: any) => {
+                (state.good as any).property[index].values.forEach((value: any) => value.is_default = 0);
+                ((state.good as any).property[index].values[key] as any).is_default = 1;
                 (state.good as any).number = 1
+            }
+
+            //计算购物车总数
+            const getCartGoodsNumber = () => {
+                return state.cart.reduce((acc: any, cur: any) => acc + cur.number, 0)
+            }
+
+            //计算购物车总价
+            const getCartGoodsPrice = () => {
+                return state.cart.reduce((acc: any, cur: any) => acc + cur.number * cur.price, 0)
+            }
+
+            //是否达到起送价
+            const  disabledPay = () =>  {
+                return getOrderType == 'takeout' && (getCartGoodsPrice() < getStore.min_price) ? true : false
             }
 
             onMounted(async () => {
@@ -408,6 +445,9 @@
                 handleAddToCart,
                 getGoodSelectedProps,
                 changePropertyDefault,
+                getCartGoodsNumber,
+                getCartGoodsPrice,
+                disabledPay,
                 scrollTo,
                 getOrderType,
                 getStore,
@@ -418,6 +458,68 @@
 </script>
 
 <style scoped lang="scss">
+  .cart-box {
+    position: absolute;
+    bottom: 60px;
+    left: 15px;
+    right: 15px;
+    height: 48px;
+    border-radius: 24px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .mark {
+      padding-left: 10px;
+      margin-right: 15px;
+      position: relative;
+      display: flex;
+      .head-content{
+        position: relative;
+        .tag {
+          background-color: $menu-card-tip;
+          color: $text-color-white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: $font-size-sm;
+          position: absolute;
+          right: 0px;
+          top: 10px;
+          border-radius: 100%;
+          padding: 2px;
+          width: 20px;
+          height: 20px;
+          opacity: 0.9;
+        }
+      }
+
+      .price{
+        flex: 1;
+        margin-top: 10px;
+        margin-left: 15px;
+        color: black;
+        align-self: center;
+        line-height: 30px;
+        span{
+          margin-left: 2px;
+          font-size: 20px;
+          font-weight: 600;
+        }
+      }
+    }
+    .pay-btn {
+      height: 100%;
+      color: #FFFFFF;
+      border-radius: 0 50px 50px 0;
+      display: flex;
+      align-items: center;
+      font-size: $font-middle;
+    }
+  }
+
   :root {
     //菜单页
     --van-button-mini-height: 19px !important;
@@ -437,6 +539,7 @@
   .popup-content {
     padding: 15px 20px;
     margin-bottom: calc(var(--van-tabbar-height) + 90px);
+
     .basic {
       padding-bottom: 10px;
 

@@ -36,16 +36,16 @@
       <van-config-provider :theme-vars="contentVar">
         <van-tabs v-model:active="menuType" color="#FEBD4A">
           <van-tab title="🍧经典菜单">
-            <!--侧边栏-->
             <div class="class_menu mt10 pt10">
-              <div class="menu-slide vh-100">
+              <!--侧边栏-->
+              <div class="menu-slide">
                 <van-sidebar v-model="navIndex">
                   <div v-for="(item, index) in goods" :key="index">
                     <van-sidebar-item class="item-radius" :title="item.name" @click="scrollTo(index)"/>
                   </div>
                 </van-sidebar>
               </div>
-              <div id="goodScroll" style="flex: 1;overflow:hidden;height: 100vh ">
+              <div id="goodScroll" style="flex: 1;overflow:hidden;height: 90vh ">
                 <div class="menu-goods">
                   <!--轮播图-->
                   <van-swipe class="ads" :autoplay="3000">
@@ -113,7 +113,7 @@
       </van-config-provider>
     </van-sticky>
     <!--选规格-->
-    <van-popup v-model:show="popupShow" teleport="#popup" position="bottom" round
+    <van-popup v-model:show="popupShow" teleport="#popup-detail" position="bottom" round
                :style="{ height: '85%',overflowY:'scroll' }">
       <van-swipe class="popup-head" :autoplay="3000" indicator-color="white">
         <van-swipe-item>
@@ -164,9 +164,9 @@
     </van-popup>
     <!-- 商品详情模态框 end -->
     <!-- 购物车详情popup -->
-    <div class="cart-box">
+    <div class="cart-box" v-if="cart.length > 0 && popupShow==false">
       <div class="mark">
-        <div class="head-content">
+        <div class="head-content" @click="openCartPopup">
           <svg class="icon w60 h60 mb20" aria-hidden="true">
             <use xlink:href="#icon-naichaxiaochi"></use>
           </svg>
@@ -177,28 +177,75 @@
       <button class="pay-btn" :disabled="disabledPay()">
         {{ disabledPay() ? `差${spread}元起送` : '去结算' }}
       </button>
-      <!--      <div class="price">￥{{ getCartGoodsPrice() }}</div>-->
-      <!--      <button type="primary" class="pay-btn" @tap="toPay" :disabled="disabledPay()">-->
-      <!--        {{ disabledPay() ? `差${spread}元起送` : '去结算' }}-->
-      <!--      </button>-->
     </div>
+
+    <van-popup v-model:show="cartPopupVisible" teleport="#popup-card" position="bottom" round
+               :style="{ maxHeight: '85%',overflowY:'hidden'}">
+      <div class="cart-popup">
+        <div class="top">
+          本单预计可获得<span>{{ getCartGoodsPrice() }}</span>积分 + <span>{{ getCartGoodsPrice() }}</span> 成长值
+        </div>
+        <div class="head">
+          <div class="left">自取订单</div>
+          <div class="right">
+            <svg class="icon w18 h18" aria-hidden="true">
+              <use xlink:href="#icon-shanchu"></use>
+            </svg>
+            <span class="ml3" @click="handleCartClear">清空</span>
+          </div>
+        </div>
+        <div class="cart-list">
+          <div class="wrapper">
+            <div class="item" v-for="(item, index) in cart" :key="index">
+              <div class="left">
+                <van-image :src="item.image" width="70" height="70" radius="5">
+
+                </van-image>
+              </div>
+              <div class="center">
+                <div>
+                  <div class="name">{{ item.name }}</div>
+                  <div class="props">{{ item.props_text }}</div>
+                </div>
+                <div><span>￥</span><span>{{ item.price }}</span></div>
+              </div>
+              <div class="right">
+                <div class="btn-group">
+                  <div class="class-button-minus" @click="handleCartItemReduce(index)">
+                    <van-icon name="minus" class="class-button-minus-icon"/>
+                  </div>
+                  <div class="number">
+                    {{ item.number }}
+                  </div>
+                  <div class="class-button-add" @click="handleCartItemAdd(index)">
+                    <van-icon name="plus" class="class-button-add-icon"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </van-popup>
+
   </div>
 </template>
 
 <script lang="ts">
     import {useLayoutStore} from '@/store/modules/layout'
     import {computed, getCurrentInstance, nextTick, onMounted, reactive, toRefs} from 'vue'
+    import { storeToRefs } from 'pinia';
     import Bscroll from 'better-scroll'
-    // @ts-ignore
-    // import GoodPopup from '@/components/menu/goodPopup.vue';
+    import {Dialog,Notify} from "vant";
 
     export default {
         name: "Menu",
         // components: {GoodPopup},
         setup: function () {
             const {proxy} = getCurrentInstance() as any
-            const {getOrderType, updateName, getStore} = useLayoutStore()
-
+            const {getOrderType, getStore ,isLogin} = storeToRefs(useLayoutStore())
+            const {updateName} = useLayoutStore()
             const state = reactive({
                 //菜单类型 经典菜单 or 人气推荐
                 menuType: 0,
@@ -210,6 +257,8 @@
                 cart: [] as any,
                 //选择商品规格
                 popupShow: false,
+                //物车列表
+                cartPopupVisible: false,
                 //当前饮品
                 good: {},
                 //当前饮品所在分类
@@ -341,6 +390,19 @@
                     props: getGoodSelectedProps(state.good, 'id')
                 })
                 handleAddToCart(state.category, product, (state.good as any).number)
+                closeGoodDetailModal()
+            }
+
+            //关闭饮品详情模态框
+            const closeGoodDetailModal = () => {
+                state.popupShow = false
+                setTimeout(() => initGoodDetailData() as any, 1000)
+            }
+
+            const initGoodDetailData = () => {
+                console.log('timeout')
+                state.category = {}
+                state.good = {}
             }
 
             //添加到购物车
@@ -402,9 +464,61 @@
                 return state.cart.reduce((acc: any, cur: any) => acc + cur.number * cur.price, 0)
             }
 
-            //是否达到起送价
-            const  disabledPay = () =>  {
-                return getOrderType == 'takeout' && (getCartGoodsPrice() < getStore.min_price) ? true : false
+            //是否达到起送价`
+            const disabledPay = () => {
+                return getOrderType.value == 'takeout' && (getCartGoodsPrice() < (getStore as any).min_price) ? true : false
+            }
+
+            //打开/关闭购物车列表popup
+            const openCartPopup = () => {
+                state.cartPopupVisible = !state.cartPopupVisible
+            }
+
+
+            const handleCartClear =()=> {	//清空购物车
+                Dialog.confirm({
+                    message: '确认删除吗',
+                    confirmButtonColor:'#FEBD4A'
+                })
+                    .then(() => {
+                        // on confirm
+                        state.cartPopupVisible = false
+                        state.cart = []
+                    })
+                    .catch(() => {
+                        // on cancel
+                    });
+            }
+
+
+            const handleCartItemReduce =(index:any)=> {
+                if(state.cart[index].number === 1) {
+                    state.cart.splice(index, 1)
+                } else {
+                    state.cart[index].number -= 1
+                }
+                if(!state.cart.length) {
+                    state.cartPopupVisible = false
+                }
+            }
+
+            const handleCartItemAdd =(index:any)=> {
+                state.cart[index].number += 1
+            }
+
+            const toPay =()=> {
+                if(!isLogin) {
+                    Notify({ type: 'primary', message: '需要登录' });
+                    return
+                }
+
+                // uni.showLoading({title: '加载中'})
+                // uni.setStorageSync('cart', JSON.parse(JSON.stringify(this.cart)))
+                //
+                // uni.navigateTo({
+                //     url: '/pages/pay/pay'
+                // })
+                // uni.hideLoading()
             }
 
             onMounted(async () => {
@@ -447,7 +561,13 @@
                 changePropertyDefault,
                 getCartGoodsNumber,
                 getCartGoodsPrice,
+                initGoodDetailData,
+                handleCartClear,
+                handleCartItemReduce,
+                handleCartItemAdd,
+                openCartPopup,
                 disabledPay,
+                toPay,
                 scrollTo,
                 getOrderType,
                 getStore,
@@ -459,7 +579,7 @@
 
 <style scoped lang="scss">
   .cart-box {
-    position: absolute;
+    position: fixed;
     bottom: 60px;
     left: 15px;
     right: 15px;
@@ -470,14 +590,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 2000;
 
     .mark {
       padding-left: 10px;
       margin-right: 15px;
       position: relative;
       display: flex;
-      .head-content{
+
+      .head-content {
         position: relative;
+
         .tag {
           background-color: $menu-card-tip;
           color: $text-color-white;
@@ -496,27 +619,32 @@
         }
       }
 
-      .price{
+      .price {
         flex: 1;
         margin-top: 10px;
         margin-left: 15px;
         color: black;
         align-self: center;
         line-height: 30px;
-        span{
+
+        span {
           margin-left: 2px;
           font-size: 20px;
           font-weight: 600;
         }
       }
     }
+
     .pay-btn {
       height: 100%;
       color: #FFFFFF;
+      padding: 0px 18px;
       border-radius: 0 50px 50px 0;
       display: flex;
       align-items: center;
       font-size: $font-middle;
+      border-width: 0px;
+      background-image: linear-gradient(to bottom, #FEBD4A 0%, #fdd486 100%);
     }
   }
 
@@ -715,6 +843,169 @@
     }
   }
 
+  .cart-popup {
+    position: relative;
+
+    .top {
+      position: relative;
+      width: 100%;
+      background-color: #fef7ea;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      span {
+        color: $color-theme;
+        font-size: $font-large;
+        font-weight: 600;
+        margin: 0px 3px;
+      }
+    }
+
+    .head {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 10px;
+      background-color: white;
+
+      .left {
+        border: $color-theme 1px solid;
+        font-size: $font-mini;
+        color: $color-theme;
+        background-color: #fef7ea;
+        padding: 3px;
+        zoom: 0.8;
+      }
+
+      .right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $color-border;
+      }
+    }
+
+    .cart-list {
+
+      .wrapper {
+        max-height: 350px;
+        display: flex;
+        flex-direction: column;
+        padding: 0 15px;
+        margin-bottom: calc(var(--van-tabbar-height) + 80px);
+        overflow-y: scroll;
+
+        .item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 0;
+          position: relative;
+
+          .left {
+
+          }
+
+          .center {
+            flex: 1;
+            height: 70px;
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            span:nth-child(1){
+              zoom: 0.7;
+            }
+            span:nth-child(2){
+              font-size: $font-middle;
+              font-weight: bold;
+            }
+            .name {
+              font-size: $font-mini;
+              font-weight: bold;
+              color: black;
+            }
+
+            .props {
+              margin-top: 8px;
+              color: $menu-content-tip;
+              font-size: $font-mini;
+              zoom: 0.7;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+
+          }
+          .right {
+            height: 70px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            .btn-group {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              .pro-button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 10px;
+                background-image: linear-gradient(to bottom, #FEBD4A 0%, #fdd486 100%);
+                padding: 5px 8px;
+
+                span {
+                  font-size: $font-mini;
+                  color: white;
+                  zoom: 0.75;
+                  letter-spacing: 0.5px;
+                }
+              }
+
+              .class-button {
+                &-minus {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  padding: 4px;
+                  border-radius: 30px;
+                  border: $color-border 1px solid;
+
+                  &-icon {
+                    font-size: $font-middle;
+                    color: $color-border;
+                  }
+                }
+
+                &-add {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  padding: 4px;
+                  color: white;
+                  border-radius: 30px;
+                  background-image: linear-gradient(to bottom, #FEBD4A 0%, #fddb9a 100%);
+
+                  &-icon {
+                    font-size: $font-middle;
+                    color: white;
+                  }
+                }
+              }
+
+              .number {
+                padding: 0px 8px;
+              }
+            }
+
+          }
+        }
+      }
+    }
+  }
+
   .nav {
     padding: 10px;
 
@@ -772,7 +1063,7 @@
 
     .menu-slide {
       overflow-y: scroll;
-
+      height: 90vh;
       .item-radius {
         border-top-right-radius: 15px;
       }

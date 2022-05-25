@@ -1,7 +1,8 @@
 <template>
   <!-- 和 vue-router3 一样，展示路由的组件的地方 -->
   <router-view/>
-  <div id="popup" class="fixed"></div>
+  <div id="popup-detail" class="fixed"></div>
+  <div id="popup-card" class="fixed"></div>
   <NavBar v-if="show"/>
 </template>
 

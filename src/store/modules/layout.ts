@@ -18,7 +18,9 @@ export const useLayoutStore = defineStore({
         },
         getStore():any{
             return this.store
-        }
+        },
+        //是否登录
+        isLogin:state=>Object.keys(state.member).length > 0
     },
     actions: {
         async updateName() {

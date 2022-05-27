@@ -174,7 +174,7 @@
         </div>
         <div class="price">￥<span>{{ getCartGoodsPrice() }}</span></div>
       </div>
-      <button class="pay-btn" :disabled="disabledPay()">
+      <button class="pay-btn" @click="toPay" :disabled="disabledPay()">
         {{ disabledPay() ? `差${spread}元起送` : '去结算' }}
       </button>
     </div>
@@ -238,6 +238,7 @@
     import { storeToRefs } from 'pinia';
     import Bscroll from 'better-scroll'
     import {Dialog,Notify} from "vant";
+    import { useRouter } from 'vue-router'
 
     export default {
         name: "Menu",
@@ -506,19 +507,14 @@
                 state.cart[index].number += 1
             }
 
+            const router = useRouter()
             const toPay =()=> {
                 if(!isLogin) {
                     Notify({ type: 'primary', message: '需要登录' });
                     return
                 }
-
-                // uni.showLoading({title: '加载中'})
-                // uni.setStorageSync('cart', JSON.parse(JSON.stringify(this.cart)))
-                //
-                // uni.navigateTo({
-                //     url: '/pages/pay/pay'
-                // })
-                // uni.hideLoading()
+                router.push('/pay')
+                localStorage.setItem('cart',JSON.stringify(state.cart))
             }
 
             onMounted(async () => {

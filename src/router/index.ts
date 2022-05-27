@@ -1,8 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-// @ts-ignore
-import Home from '../views/Home.vue'
-// @ts-ignore
-import Menu from '../views/Menu.vue'
 
 
 // createRouter 创建路由实例
@@ -16,13 +12,26 @@ const router = createRouter({
     {
       path: '/home',
       name: 'Home',
-      component: Home
+      // @ts-ignore
+      component: ()=>import('@/views/Home.vue')
     },
     {
       path: '/menu',
       name: 'Menu',
       // @ts-ignore
       component: ()=>import('@/views/Menu.vue')
+    },
+    {
+      path: '/pay',
+      name: 'Pay',
+      // @ts-ignore
+      component: ()=>import('@/views/Pay.vue')
+    },
+    {
+      path: '/payTime',
+      name: 'payTime',
+      // @ts-ignore
+      component: ()=>import('@/views/payTime.vue')
     }
   ]
 })

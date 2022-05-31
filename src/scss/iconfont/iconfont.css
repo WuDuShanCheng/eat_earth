@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3394827 */
-  src: url('iconfont.woff2?t=1653610232826') format('woff2'),
-       url('iconfont.woff?t=1653610232826') format('woff'),
-       url('iconfont.ttf?t=1653610232826') format('truetype');
+  src: url('iconfont.woff2?t=1653976918612') format('woff2'),
+       url('iconfont.woff?t=1653976918612') format('woff'),
+       url('iconfont.ttf?t=1653976918612') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shequ:before {
+  content: "\ef5f";
+}
+
+.icon-youhuiquan:before {
+  content: "\ef62";
+}
+
+.icon-naicha:before {
+  content: "\e626";
+}
+
+.icon-zhifupingtai-zhifubao:before {
+  content: "\e613";
+}
+
+.icon-zhifupingtai-yinlian:before {
+  content: "\e614";
+}
+
+.icon-zhifupingtai-weixin:before {
+  content: "\e61e";
 }
 
 .icon-15:before {
@@ -29,20 +53,8 @@
   content: "\ec35";
 }
 
-.icon-shouye:before {
-  content: "\e62b";
-}
-
-.icon-youhuiquan1:before {
-  content: "\e649";
-}
-
 .icon-beizhu:before {
   content: "\e639";
-}
-
-.icon-youhuiquan:before {
-  content: "\e77f";
 }
 
 .icon-ditu:before {

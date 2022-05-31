@@ -1,37 +1,40 @@
 <template>
   <div class="home w-100 pb50">
-    <van-image src="https://img-shop.qmimg.cn/s23107/2020/04/26/3eb7808bf105262604.jpg" class="h300 w-100"></van-image>
+    <van-image src="https://static-shuyi-scrm-w7.shuyi.org.cn/images/1/2022/03/h5L1XKvOOK0HOMH0ZGMk500c5nLUkn.jpg?x-oss-process=image/resize,m_lfit,w_750/quality,q_90" class="h300 w-100"></van-image>
     <div class="content">
       <!--个人信息-->
       <div class="info">
         <div class="head-icon">
           <!-- 通过 class-prefix 指定类名为 my-icon -->
-          <svg class="icon w45 h45" aria-hidden="true">
-            <use xlink:href="#icon-icon-test"></use>
-          </svg>
+<!--          <svg class="icon w45 h45" aria-hidden="true">-->
+<!--            <use xlink:href="#icon-icon-test"></use>-->
+<!--          </svg>-->
+<!--          <van-image src="../assets/fracvcmes.gif"></van-image>-->
+          <img class="head" src="../assets/fracvcmes.gif">
         </div>
         <div class="head-content">
           <!-- 通过 class-prefix 指定类名为 my-icon -->
           <svg class="icon w59 h25" aria-hidden="true">
             <use xlink:href="#icon-chuangxiangzuanshivip"></use>
           </svg>
-          <div class="head-content-text">距<span>V6</span>还差<span>3223</span>点经验值
+          <div class="head-content-text">距<span>V6</span>还差<span>22</span>点经验值
           </div>
         </div>
         <div class="head-end">
           我的积分 28
         </div>
       </div>
-
       <!--自取 外卖-->
       <div class="type-content">
         <div class="item">
+<!--          <van-image src="https://static-shuyi-scrm.shuyi.org.cn/miniprogram/assets/files/upload_96f4bc3c722a97f5cc0ab6a7ed0e1651.png"></van-image>-->
           <svg class="icon w35 h35" aria-hidden="true">
             <use xlink:href="#icon-jiancansushi"></use>
           </svg>
           <div class="title mt5">自取</div>
         </div>
         <div class="item">
+<!--          <van-image src="https://static-shuyi-scrm.shuyi.org.cn/miniprogram/assets/files/upload_a68507a051a48c115e948e63c4b5d8b0.png"></van-image>-->
           <svg class="icon w35 h35" aria-hidden="true">
             <use xlink:href="#icon-tongchengwaimai"></use>
           </svg>
@@ -118,6 +121,11 @@
         .head-icon {
           display: flex;
           align-items: center;
+          .head{
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
+          }
         }
 
         .head-content {

@@ -29,9 +29,21 @@ const router = createRouter({
     },
     {
       path: '/payTime',
-      name: 'payTime',
+      name: 'PayTime',
       // @ts-ignore
-      component: ()=>import('@/views/payTime.vue')
+      component: ()=>import('@/views/PayTime.vue')
+    },
+    {
+      path: '/order',
+      name: 'Order',
+      // @ts-ignore
+      component: ()=>import('@/views/Order.vue')
+    },
+    {
+      path: '/mine',
+      name: 'Mine',
+      // @ts-ignore
+      component: ()=>import('@/views/Mine.vue')
     }
   ]
 })

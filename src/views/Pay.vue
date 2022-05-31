@@ -131,7 +131,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import {onMounted, reactive, toRefs,computed} from 'vue'
   import {storeToRefs} from "pinia";
   import {useLayoutStore} from "@/store/modules/layout";
@@ -155,12 +155,12 @@
       }
       //商品数量
       const amount = computed(()=>{
-        return state.cart.reduce((acc, cur) => acc + cur.number, 0)
+        return state.cart.reduce((acc, cur) => acc + (cur as any).number, 0)
       })
 
       //商品总价
       const total = computed(()=>{
-        return state.cart.reduce((acc, cur) => acc + cur.number * cur.price, 0)
+        return state.cart.reduce((acc, cur) => acc + (cur as any).number * (cur as any).price, 0)
       })
 
       const router = useRouter()
@@ -169,7 +169,7 @@
       }
 
       onMounted(() => {
-        state.cart = JSON.parse(localStorage.getItem('cart'))
+        state.cart = JSON.parse(localStorage.getItem('cart') as any)
       })
 
 

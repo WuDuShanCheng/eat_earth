@@ -1,8 +1,10 @@
 import store from './store'
 import goods from './goods'
+import orders from './orders'
 const json = {
 	store,
-	goods
+	goods,
+	orders
 }
 
 // @ts-ignore

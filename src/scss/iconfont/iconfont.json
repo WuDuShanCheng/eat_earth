@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18251917",
+      "name": "社区",
+      "font_class": "shequ",
+      "unicode": "ef5f",
+      "unicode_decimal": 61279
+    },
+    {
+      "icon_id": "18251920",
+      "name": "优惠券",
+      "font_class": "youhuiquan",
+      "unicode": "ef62",
+      "unicode_decimal": 61282
+    },
+    {
+      "icon_id": "5316051",
+      "name": "奶茶",
+      "font_class": "naicha",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
+      "icon_id": "6360070",
+      "name": "支付平台-支付宝",
+      "font_class": "zhifupingtai-zhifubao",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "6360092",
+      "name": "支付平台-银联",
+      "font_class": "zhifupingtai-yinlian",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "6360166",
+      "name": "支付平台-微信",
+      "font_class": "zhifupingtai-weixin",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
       "icon_id": "1312291",
       "name": "dukan",
       "font_class": "15",
@@ -34,32 +76,11 @@
       "unicode_decimal": 60469
     },
     {
-      "icon_id": "765570",
-      "name": "优惠卡",
-      "font_class": "shouye",
-      "unicode": "e62b",
-      "unicode_decimal": 58923
-    },
-    {
-      "icon_id": "2892861",
-      "name": "优惠券",
-      "font_class": "youhuiquan1",
-      "unicode": "e649",
-      "unicode_decimal": 58953
-    },
-    {
       "icon_id": "6582348",
       "name": "备注",
       "font_class": "beizhu",
       "unicode": "e639",
       "unicode_decimal": 58937
-    },
-    {
-      "icon_id": "21797682",
-      "name": "优惠券",
-      "font_class": "youhuiquan",
-      "unicode": "e77f",
-      "unicode_decimal": 59263
     },
     {
       "icon_id": "11372655",

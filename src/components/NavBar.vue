@@ -3,7 +3,7 @@
     <van-tabbar-item name="/home" icon="wap-home-o" @click="link('/home')">首页</van-tabbar-item>
     <van-tabbar-item name="/menu" icon="shopping-cart-o" @click="link('/menu')">点菜</van-tabbar-item>
     <van-tabbar-item name="/order" icon="orders-o" @click="link('/order')">订单</van-tabbar-item>
-    <van-tabbar-item name="/user" icon="user-o" @click="link('/user')">我的</van-tabbar-item>
+    <van-tabbar-item name="/mine" icon="user-o" @click="link('/mine')">我的</van-tabbar-item>
   </van-tabbar>
 </template>
 <script>
@@ -30,7 +30,7 @@ export default {
 
     router.afterEach(() => {
       active.value = router.currentRoute.value.path
-      state.show = ['/home','/menu','/order','/user'].includes(active.value)
+      state.show = ['/home','/menu','/order','/mine'].includes(active.value)
     })
 
     return {

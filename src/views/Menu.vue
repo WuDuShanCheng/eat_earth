@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="menu-root">
-    <van-nav-bar title="浩子来点餐"/>
+    <van-nav-bar title="点餐"/>
     <div class="nav">
       <van-config-provider :theme-vars="headVar">
         <div class="header">

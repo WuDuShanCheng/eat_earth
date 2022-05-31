@@ -17,4 +17,12 @@
 
   --van-background-color: #f6f6f6 !important;
   --van-sidebar-selected-border-color: #{$color-theme} !important;
+
+  .van-tabs__nav{
+    padding: 0px 60px !important;
+  }
+  .van-tabs__line{
+    bottom: 3px;
+    background:$color-theme
+  }
 }

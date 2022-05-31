@@ -5,7 +5,7 @@ import router from './router'
 import 'lib-flexible/flexible'
 import { Button, Tabbar, TabbarItem, Form, Field, Icon, NavBar, Cell, CellGroup, Popup, List, PullRefresh, DatetimePicker,
     NumberKeyboard, Dialog, Progress, Rate, Divider,Col, Row ,Image as VanImage,NoticeBar,Sticky,Tabs,Tab,
-    Sidebar, SidebarItem,Swipe, SwipeItem,ConfigProvider,Badge,Notify } from 'vant';
+    Sidebar, SidebarItem,Swipe, SwipeItem,ConfigProvider,Badge,Notify  } from 'vant';
 
 
 // 全局样式
@@ -19,12 +19,13 @@ import '@/scss/iconfont/iconfont'
 //引入pinia
 import { pinia } from '@/store'
 // 全局方法注册
-import {getRandomCode} from '@/utils/globalMethods'
+import {getRandomCode,formatDateTime} from '@/utils/globalMethods'
 import api from '@/api'
 
 const app = createApp(App)
 app.config.globalProperties.getRandomCode=getRandomCode
 app.config.globalProperties.$api=api
+app.config.globalProperties.formatDateTime=formatDateTime
 
 app.use(router)
 
